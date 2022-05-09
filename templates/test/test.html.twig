@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>Test de fonctionnement du template</h1>
+
+    {# 
+        {%  %} permet de définir un fonctionnement, charger un block, une variable, etc.
+        {{  }} permet d'afficher une information => echo en php
+     #}
+     {# set permet de définir une variable #}
+    {% set hello = "Hello world" %}
+    <h2>{{ hello }}</h2>
+{% endblock %}
+

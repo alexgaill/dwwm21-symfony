@@ -5,9 +5,20 @@ Ce projet est réalisé avec la promotion **altrh dwwm21** de l'année 2022.
 Vous pouvez retrouver le projet sur <https://github.com/alexgaill/dwwm21-symfony>.
 
 ## Documents de cours 
- 
-> [Déroulé](documentsCours/deroule.pdf) 
+> [Déroulé](documentsCours/deroule.pdf)
+
+
 ## Pour lancer le projet
+
+```sh
+
+# Pour créer un projet symfony il faut s'assurer d'avoir composer et le cli de symfony
+
+```
+
+## Liens utiles
+
+> [Composer]()
  
 
 ## Une question sur le projet? 

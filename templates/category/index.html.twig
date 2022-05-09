@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# 
+        dump() permet de débugguer 
+        et d'afficher les informations contenues dans une variable.
+        Cette fonction correspond au var_dump() de php en plus joli.
+     #}
+    {# {{ dump(categoriesList) }} #}
+
+    <h1>Liste des catégories</h1>
+
+    {% if categoriesList %}
+    <ul>
+        {% for categorie in categoriesList %}
+            <li>{{ categorie.name|upper }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Il n'y a pas de catégories pour le moment.</p>
+    {% endif %}
+{% endblock %}

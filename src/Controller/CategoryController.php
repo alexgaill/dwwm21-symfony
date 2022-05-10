@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\CategoryType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -11,9 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(path:"/category")]
 final class CategoryController extends AbstractController
 {
-    #[Route('/category', name: 'app_category')]
+    #[Route('/', name: 'app_category')]
     public function index(ManagerRegistry $registry): Response
     {
         /**
@@ -29,7 +31,7 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route(path:'/category/{id}', name:'app_single_category', methods:["GET"], requirements: ['id' => "\d+"])]
+    #[Route(path:'/{id}', name:'app_single_category', methods:["GET"], requirements: ['id' => "\d+"])]
     public function single(int $id, ManagerRegistry $registry): Response
     {
         $category = $registry->getRepository(Category::class)->find($id);
@@ -45,7 +47,7 @@ final class CategoryController extends AbstractController
         }
     }
 
-    #[Route(path:"/category/add", name:"app_add_category", methods:["GET", "POST"])]
+    #[Route(path:"/add", name:"app_add_category", methods:["GET", "POST"])]
     public function add (Request $request, ManagerRegistry $manager): Response
     {
         $category = new Category;
@@ -83,5 +85,29 @@ final class CategoryController extends AbstractController
         return $this->renderForm('category/add.html.twig', [
             'categoryForm' => $form
         ]);
+    }
+
+    #[Route(path:'/{id}/update', name:'app_update_category', methods:['GET', 'POST'], requirements:['id' => "\d+"])]
+    public function update (Category $category, Request $request, ManagerRegistry $manager): Response
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->getRepository(Category::class)->add($category, true);
+
+            return $this->redirectToRoute('app_single_category', ['id' => $category->getId()]);
+        }
+
+        return $this->renderForm('category/add.html.twig', [
+            'categoryForm' => $form
+        ]);
+    }
+
+    #[Route('/{id}/delete', name:'app_delete_category', requirements: ['id' => "\d+"], methods: ['GET'])]
+    public function delete(Category $category, ManagerRegistry $manager): Response
+    {
+        $manager->getRepository(Category::class)->remove($category, true);
+        return $this->redirectToRoute('app_category');
     }
 }

@@ -13,7 +13,7 @@
     {% if categoriesList %}
     <ul>
         {% for categorie in categoriesList %}
-            <li>{{ categorie.name|upper }}</li>
+            <li><a href="{{ path('app_single_category', {id: categorie.id}) }}">{{ categorie.name|upper }}</a></li>
         {% endfor %}
     </ul>
     {% else %}

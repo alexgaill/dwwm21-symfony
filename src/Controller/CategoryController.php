@@ -25,4 +25,20 @@ final class CategoryController extends AbstractController
             'categoriesList' => $categories,
         ]);
     }
+
+    #[Route(path:'/category/{id}', name:'app_single_category', methods:["GET"], requirements: ['id' => "\d+"])]
+    public function single(int $id, ManagerRegistry $registry): Response
+    {
+        $category = $registry->getRepository(Category::class)->find($id);
+        
+        // Si l'id correspond à une catégorie présente en BDD, on affiche le template
+        if ($category) {
+            return $this->render('category/single.html.twig', [
+                'category' => $category
+            ]);
+        } else {
+            // Redirige l'utilisateur sur la page affichant toutes les catégories
+            return $this->redirectToRoute('app_category');
+        }
+    }
 }

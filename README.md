@@ -1,25 +1,47 @@
-# altrh dwwm21 - symfony 
+# test dwwm21 - symfony 
 
-Ce projet est réalisé avec la promotion **altrh dwwm21** de l'année 2022.
+Ce projet est réalisé avec la promotion **test dwwm21** de l'année 2022.
 
 Vous pouvez retrouver le projet sur <https://github.com/alexgaill/dwwm21-symfony>.
 
-## Documents de cours 
-> [Déroulé](documentsCours/deroule.pdf)
+## Liens utiles
+> [Installer composer](https://getcomposer.org/download/)
+>
+> [Installer symfony](https://symfony.com/download)
+>
+> [Documentation Symfony](https://symfony.com/doc/current/index.html)
+>
+> [Documentation Twig](https://twig.symfony.com/doc/)
+>
+> [Documentation doctrine](https://www.doctrine-project.org/projects/doctrine-orm/en/2.11/reference/query-builder.html#the-querybuilder)
+>
+> [FakerPhp](https://packagist.org/packages/fakerphp/faker)
+>
+> [Documentation FakerPhp](https://fakerphp.github.io/)
 
+## Documents de cours
+> [Déroulé](documentsCours/deroule.pdf) 
 
 ## Pour lancer le projet
-
-```sh
-
-# Pour créer un projet symfony il faut s'assurer d'avoir composer et le cli de symfony
-
+```json
+{
+"require": {
+    "php": 8.1.*,
+    "composer": 2.*
+}
 ```
+```sh
+# Lorsque vous récupérez le projet, exécutez les commandes suivantes dans le terminal
+composer install #installe les dépendances nécessaires au bon fonctionnement du projet
 
-## Liens utiles
+# Créez le fichier .env.local à la racine du projet avec la ligne DATABASE_URL correspondant à votre serveur Mysql
+# DATABASE_URL="mysql://root:@127.0.0.1:3306/superblog" # xampp ou wamp
+# DATABASE_URL="mysql://root:root@127.0.0.1:8889/superblog" # mamp
 
-> [Composer]()
- 
+symfony console doctrine:database:create
+symfony console doctrine:migrations:migrate
+symfony server:start
+ ``` 
 
 ## Une question sur le projet? 
 ### [Contactez-moi](mailto:contact@steptosuccess.com)

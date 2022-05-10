@@ -40,6 +40,7 @@ composer install #installe les dépendances nécessaires au bon fonctionnement d
 
 symfony console doctrine:database:create
 symfony console doctrine:migrations:migrate
+symfony console doctrine:fixtures:load
 symfony server:start
  ``` 
 

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <h1>Liste des articles</h1>
+
+    {% if postsList %}
+        <ul>
+            {% for post in postsList %}
+                <li><a href="{{ path('app_single_post', {id: post.id}) }}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Il n'y a pas d'articles pour le moment.</p>
+    {% endif %}
+{% endblock %}

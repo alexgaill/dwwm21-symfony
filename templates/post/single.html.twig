@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+    <small>
+        Cet article a été rédigé le 
+        {{ post.createdAt|format_datetime('long', 'none', locale='fr') }}
+    </small>
+{% endblock %}

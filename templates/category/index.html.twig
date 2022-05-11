@@ -7,16 +7,40 @@
         Cette fonction correspond au var_dump() de php en plus joli.
      #}
     {# {{ dump(categoriesList) }} #}
+<div class="text-center">
+    <h1 class="my-5">Liste des catégories</h1>
 
-    <h1>Liste des catégories</h1>
+    <table class="table table-stripped table-hover text-start">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if categoriesList %}
+                {% for categorie in categoriesList %}
+                    <tr>
+                        <td>{{categorie.id}}</td>
+                        <td>{{categorie.name}}</td>
+                        <td>
+                            <a href="{{ path('app_single_category', {id: categorie.id}) }}"><button class="btn btn-info">Voir plus</button></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="3" class="text-warning">Il n'y a pas de catégories pour le moment.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-center"><a href="{{ path('app_add_category')}}"><button class="btn btn-info">Ajouter une catégorie</button></a></td>
+            </tr>
+        </tfoot>
+    </table>
 
-    {% if categoriesList %}
-    <ul>
-        {% for categorie in categoriesList %}
-            <li><a href="{{ path('app_single_category', {id: categorie.id}) }}">{{ categorie.name|upper }}</a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>Il n'y a pas de catégories pour le moment.</p>
-    {% endif %}
+</div>
 {% endblock %}

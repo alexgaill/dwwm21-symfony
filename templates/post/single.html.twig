@@ -1,10 +1,22 @@
 {% extends "base.html.twig" %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h2>{{ post.title }}</h2>
-    <p>{{ post.content }}</p>
-    <small>
-        Cet article a été rédigé le 
-        {{ post.createdAt|format_datetime('long', 'none', locale='fr') }}
-    </small>
+	<div class="text-center">
+		<div class="my-5">
+			<h1>{{post.title}}</h1>
+			<div class="col-8 mx-auto">
+				<div class="mt-5" id="postContent">
+					<p class="my-3">{{post.content}}</p>
+				</div>
+				<div class="text-start">
+					<small>Article mis en ligne le
+						{{ post.createdAt|format_datetime('long', 'none', locale='fr') }}</small>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

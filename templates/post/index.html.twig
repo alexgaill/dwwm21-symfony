@@ -1,17 +1,48 @@
 {% extends 'base.html.twig' %}
 
-
 {% block body %}
+    {# 
+        dump() permet de débugguer 
+        et d'afficher les informations contenues dans une variable.
+        Cette fonction correspond au var_dump() de php en plus joli.
+     #}
+    {# {{ dump(categoriesList) }} #}
+<div class="text-center">
+    <h1 class="my-5">Liste des articles</h1>
 
-    <h1>Liste des articles</h1>
+    <table class="table table-stripped table-hover text-start">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Titre</th>
+                <th>Contenu</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if postsList %}
+                {% for post in postsList %}
+                    <tr>
+                        <td>{{post.id}}</td>
+                        <td>{{post.title}}</td>
+                        <td>{{post.content}}</td>
+                        <td>
+                            <a href="{{ path('app_single_post', {id: post.id}) }}"><button class="btn btn-info">Voir plus</button></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="3" class="text-warning">Il n'y a pas d'articles pour le moment.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-center"><a href="{{ path('app_add_post')}}"><button class="btn btn-info">Ajouter un article</button></a></td>
+            </tr>
+        </tfoot>
+    </table>
 
-    {% if postsList %}
-        <ul>
-            {% for post in postsList %}
-                <li><a href="{{ path('app_single_post', {id: post.id}) }}">{{ post.title }}</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Il n'y a pas d'articles pour le moment.</p>
-    {% endif %}
+</div>
 {% endblock %}

@@ -44,6 +44,7 @@ class PostController extends AbstractController
             $post->setCreatedAt(new DateTime());
             $manager->getRepository(Post::class)->add($post, true);
 
+            $this->addFlash('success', "L'article ".$post->getTitle()." a été enregistré avec succés ");
             return $this->redirectToRoute('app_single_post', ['id' => $post->getId()]);
         }
 
@@ -61,6 +62,7 @@ class PostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->getRepository(Post::class)->add($post, true);
 
+            $this->addFlash('success', "L'article ".$post->getTitle()." a été modifié avec succés ");
             return $this->redirectToRoute('app_single_post', ['id' => $post->getId()]);
         }
 
@@ -77,6 +79,7 @@ class PostController extends AbstractController
         $om->remove($post);
         $om->flush();
 
+        $this->addFlash('success', "L'article ".$post->getTitle()." a été supprimé avec succés ");
         return $this->redirectToRoute('app_post');
     }
 }

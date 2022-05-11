@@ -1,11 +1,13 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CategoryRepository;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-final class Category {
+class Category {
 
     /**
      * Id de la catégorie
@@ -16,7 +18,8 @@ final class Category {
      */
     #[ORM\Id]
     #[ORM\GeneratedValue()]
-    #[ORM\Column(name:"categorie_id", type:"integer")]
+    // #[ORM\Column(name:"categorie_id", type:"integer")]
+    #[ORM\Column(type:"integer")]
     private int $id;
 
     /**
@@ -29,6 +32,14 @@ final class Category {
      */
     #[ORM\Column(type:"string", unique:true, length:60)]
     private string $name;
+
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Post::class, orphanRemoval: true)]
+    private $posts;
+
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 
     /**
      * Retourne l'id de la catégorie
@@ -59,6 +70,36 @@ final class Category {
     public function setName (string $name): self
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Post>
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getCategory() === $this) {
+                $post->setCategory(null);
+            }
+        }
+
         return $this;
     }
 }

@@ -77,6 +77,7 @@ final class CategoryController extends AbstractController
             $objectManager->persist($category);
             $objectManager->flush();
             
+            $this->addFlash('success', "Nouvelle catégorie ajoutée");
             return $this->redirectToRoute('app_single_category', ['id' => $category->getId()]);
         }
         
@@ -95,7 +96,8 @@ final class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->getRepository(Category::class)->add($category, true);
-
+            $this->addFlash('success', "La catégorie ".$category->getName()." a été modifiée avec succés ");
+            
             return $this->redirectToRoute('app_single_category', ['id' => $category->getId()]);
         }
 
@@ -109,6 +111,8 @@ final class CategoryController extends AbstractController
     public function delete(Category $category, ManagerRegistry $manager): Response
     {
         $manager->getRepository(Category::class)->remove($category, true);
+        $this->addFlash('success', "La catégorie ".$category->getName()." a été supprimée avec succés ");
+
         return $this->redirectToRoute('app_category');
     }
 }

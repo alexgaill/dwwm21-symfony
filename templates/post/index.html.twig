@@ -14,6 +14,7 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>Catégorie</th>
                 <th>Titre</th>
                 <th>Contenu</th>
                 <th>Actions</th>
@@ -24,6 +25,7 @@
                 {% for post in postsList %}
                     <tr>
                         <td>{{post.id}}</td>
+                        <td>{{post.category.name}}</td>
                         <td>{{post.title}}</td>
                         <td>{{post.subContent}}</td>
                         <td>

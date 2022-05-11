@@ -43,30 +43,46 @@
 								<a class="nav-link" href="{{ path('app_add_post')}}">Ajouter un article</a>
 							</li>
 							{# <li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									Dropdown
-								</a>
-								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<li>
-										<a class="dropdown-item" href="#">Action</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="#">Another action</a>
-									</li>
-									<li><hr class="dropdown-divider"></li>
-									<li>
-										<a class="dropdown-item" href="#">Something else here</a>
-									</li>
-								</ul>
-							</li> #}
+																						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+																							Dropdown
+																						</a>
+																						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+																							<li>
+																								<a class="dropdown-item" href="#">Action</a>
+																							</li>
+																							<li>
+																								<a class="dropdown-item" href="#">Another action</a>
+																							</li>
+																							<li><hr class="dropdown-divider"></li>
+																							<li>
+																								<a class="dropdown-item" href="#">Something else here</a>
+																							</li>
+																						</ul>
+																					</li> #}
 						</ul>
 					</div>
 				</div>
 			</nav>
+			<div class="container mt-3">
+				{% for type, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{type}}  alert-dismissible fade show" role="alert">
+							{{message}}
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endfor %}
+				{% endfor %}
+			</div>
 		</header>
-		<main class="container">
-            {% block body %}{% endblock %}
-        </main>
-        <footer></footer>
-    </body>
+		<main class="container"> 
+			{% block body %}{% endblock %}
+		</main>
+		<footer></footer>
+		<script>
+			var alertList = document.querySelectorAll('.alert')
+			alertList.forEach(function (alert) {
+			new bootstrap.Alert(alert)
+			})
+		</script>
+	</body>
 </html>

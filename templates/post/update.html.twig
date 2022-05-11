@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="my-3 text-center">
+    <h1 class="my-5">Modifier l'article n° {{post.id}}</h1>
+</div>
+    {# {{ form(form) }} #}
+    {% include "post/_form.html.twig" with {buttonLabel: "Mettre à jour"} %}
+{% endblock %}

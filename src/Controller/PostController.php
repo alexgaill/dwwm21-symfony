@@ -64,8 +64,9 @@ class PostController extends AbstractController
             return $this->redirectToRoute('app_single_post', ['id' => $post->getId()]);
         }
 
-        return $this->renderForm('post/add.html.twig', [
-            'form' => $form
+        return $this->renderForm('post/update.html.twig', [
+            'form' => $form,
+            'post' => $post
         ]);
     }
 

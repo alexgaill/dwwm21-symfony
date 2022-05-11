@@ -16,9 +16,23 @@ class PostType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => "titre de l'article"
+                'label' => "Titre de l'article",
+                'row_attr' => [
+                    'class' => 'form-floating mb-3'
+                ],
+                'attr' => [
+                    'placeholder' => "Titre de l'article"
+                ]
             ])
-            ->add('content', TextareaType::class)
+            ->add('content', TextareaType::class, [
+                'label' =>"Contenu de l'article",
+                'row_attr' => [
+                    'class' => "form-floating mb-3"
+                ],
+                'attr' => [
+                    'placeholder' => "Contenu de l'article"
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Soumettre les infos'
             ])

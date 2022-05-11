@@ -4,5 +4,6 @@
 <div class="my-3 text-center">
     <h1 class="my-5">Ajouter un article</h1>
 </div>
-    {{ form(form) }}
+    {# {{ form(form) }} #}
+    {% include "post/_form.html.twig" with {buttonLabel: "Enregistrer"} %}
 {% endblock %}

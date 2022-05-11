@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="text-center">
+    <h1 class="my-5">Modifier la catégorie: {{category.name}}</h1>
+    {# {{ form(categoryForm) }} #}
+    {# 
+        On inclut un module de template dédié au formulaire de category 
+        auquel on passe la variable buttonLabel ayant pour valeur "Mettre à jour "
+    #}
+    {% include "category/_form.html.twig" with { buttonLabel: "Mettre à jour" } %}
+</div>
+{% endblock %}

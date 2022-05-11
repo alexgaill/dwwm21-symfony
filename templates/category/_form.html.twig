@@ -1,0 +1,9 @@
+{# 
+    Ce fichier comprend le formulaire des catégories que l'on va répéter sur plusieurs pages.
+    Pour certains éléments comme le bouton, la valeur va changer en fonction de la page depuis laquelle on l'appelle.
+    On attribue donc des variables à ces valeurs qui seront passées avec l'appel du module.
+#}
+{{form_start(categoryForm)}}
+    {{ form_row(categoryForm.name) }}
+    {{ form_row(categoryForm.submit, {label: buttonLabel}) }}
+{{form_end(categoryForm)}}

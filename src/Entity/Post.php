@@ -22,6 +22,8 @@ class Post
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
+    private string $subContent;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,5 +63,11 @@ class Post
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function getSubContent (): ?string
+    {
+        $this->subContent = substr($this->content, 0, strpos($this->content, " ", 100)) . " ...";
+        return $this->subContent;
     }
 }

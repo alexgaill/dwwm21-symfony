@@ -6,6 +6,7 @@ use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +19,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
+
+    public const PAGINATOR_PER_PAGE = 10;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
@@ -45,6 +49,23 @@ class PostRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    /**
+     * Retourne une liste d'article suivant la pagination
+     *
+     * @param integer $offset
+     * @return Paginator
+     */
+    public function postPaginator (int $offset): Paginator
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->setFirstResult($offset)
+            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->getQuery()
+        ;
+
+        return new Paginator($qb);
     }
 
 //    /**

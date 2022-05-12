@@ -1,50 +1,72 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {# 
-        dump() permet de débugguer 
-        et d'afficher les informations contenues dans une variable.
-        Cette fonction correspond au var_dump() de php en plus joli.
-     #}
-    {# {{ dump(categoriesList) }} #}
-<div class="text-center">
-    <h1 class="my-5">Liste des articles</h1>
+	{# 
+	        dump() permet de débugguer 
+	        et d'afficher les informations contenues dans une variable.
+	        Cette fonction correspond au var_dump() de php en plus joli.
+	     #}
+	{# {{ dump(categoriesList) }} #}
+		<div class="text-center"> <h1 class="my-5">Liste des articles</h1>
 
-    <table class="table table-stripped table-hover text-start">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Catégorie</th>
-                <th>Titre</th>
-                <th>Contenu</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if postsList %}
-                {% for post in postsList %}
-                    <tr>
-                        <td>{{post.id}}</td>
-                        <td>{{post.category.name}}</td>
-                        <td>{{post.title}}</td>
-                        <td>{{post.subContent}}</td>
-                        <td>
-                            <a href="{{ path('app_single_post', {id: post.id}) }}"><button class="btn btn-info">Voir plus</button></a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            {% else %}
-            <tr>
-                <td colspan="3" class="text-warning">Il n'y a pas d'articles pour le moment.</td>
-            </tr>
-            {% endif %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3" class="text-center"><a href="{{ path('app_add_post')}}"><button class="btn btn-info">Ajouter un article</button></a></td>
-            </tr>
-        </tfoot>
-    </table>
+		<p class="text-start text-secondary">Il y a
+			<span class="text-success">{{ postsList|length }}</span>
+			articles</p>
+		<table class="table table-stripped table-hover text-start">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Catégorie</th>
+					<th>Titre</th>
+					<th>Contenu</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if postsList %}
+					{% for post in postsList %}
+						<tr>
+							<td>{{post.id}}</td>
+							<td>{{post.category.name}}</td>
+							<td>{{post.title}}</td>
+							<td>{{post.subContent}}</td>
+							<td>
+								<a href="{{ path('app_single_post', {id: post.id}) }}">
+									<button class="btn btn-info">Voir plus</button>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td colspan="5" class="text-warning">Il n'y a pas d'articles pour le moment.</td>
+					</tr>
+				{% endif %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5">
+                    <div class="d-flex justify-content-evenly">
+							<p><a href="{{ path('app_post', {offset: 0}) }}">Page 1</a></p>
+						{% if previous >= 0 %}
+							<p><a href="{{ path('app_post', { offset: previous }) }}">Previous</a></p>
+						{% endif %}
+						{% if next < postsList|length %}
+							<p><a href="{{ path('app_post', { offset: next }) }}">Next</a></p>
+						{% endif %}
+							<p><a href="{{ path('app_post', { offset: (postsList|length) - postQty }) }}">Dernière page</a></p>
+                    </div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5" class="text-center">
+						<a href="{{ path('app_add_post')}}">
+							<button class="btn btn-info">Ajouter un article</button>
+						</a>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
 
-</div>
+	</div>
 {% endblock %}

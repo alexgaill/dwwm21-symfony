@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\PostRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +16,17 @@ use Symfony\Component\HttpFoundation\Request;
 class PostController extends AbstractController
 {
     #[Route('/', name: 'app_post')]
-    public function index(ManagerRegistry $manager): Response
+    public function index(ManagerRegistry $manager, Request $request): Response
     {
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $manager->getRepository(Post::class)->postPaginator($offset);
+
         return $this->render('post/index.html.twig', [
-            'postsList' => $manager->getRepository(Post::class)->findAll()
+            'postsList' => $manager->getRepository(Post::class)->findAll(),
+            'postsList' => $paginator,
+            'previous' => $offset - PostRepository::PAGINATOR_PER_PAGE,
+            'next' => min(count($paginator), $offset + PostRepository::PAGINATOR_PER_PAGE),
+            'postQty' => PostRepository::PAGINATOR_PER_PAGE
         ]);
     }
 

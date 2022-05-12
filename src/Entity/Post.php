@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -14,18 +15,34 @@ class Post
     private $id;
 
     #[ORM\Column(type: 'string', length: 60)]
+    #[Assert\NotBlank(message: "Le champs {{ label }} ne peut pas être vide")]
+    #[Assert\Length(
+        min:5,
+        minMessage: "Le nom de la catégorie doit faire au minimum {{ limit }} caractères",
+        max:60,
+        maxMessage: "Le nom de la catégorie doit faire au maximum {{ limit }} caractères"
+    )]
+    #[Assert\Type('string')]
     private $title;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: "Le champs {{ label }} ne peut pas être vide")]
+    #[Assert\Length(
+        min:5,
+        minMessage: "Le nom de la catégorie doit faire au minimum {{ limit }} caractères"
+    )]
+    #[Assert\Type('string')]
     private $content;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\DateTime()]
     private $createdAt;
 
     private string $subContent;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Type(Category::class)]
     private $category;
 
     public function getId(): ?int

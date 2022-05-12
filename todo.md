@@ -9,7 +9,7 @@
 --
 Exercice sondage
 --
-7. Contraintes
+7. Contraintes ![ok](tick.png)
 8. Accueil (5 derniers articles ajoutés)
 9. Dropdown catégories
 10. Pagination pour liste des articles

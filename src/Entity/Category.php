@@ -5,8 +5,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CategoryRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[UniqueEntity('name')]
 class Category {
 
     /**
@@ -31,6 +34,15 @@ class Category {
      * et qu'on ne peut pas avoir plusieurs catégories avec un nom identique.
      */
     #[ORM\Column(type:"string", unique:true, length:60)]
+    #[Assert\NotBlank(message: "Le champs {{ label }} ne peut pas être vide")]
+    #[Assert\Length(
+        min:5,
+        minMessage: "Le nom de la catégorie doit faire au minimum {{ limit }} caractères",
+        max:60,
+        maxMessage: "Le nom de la catégorie doit faire au maximum {{ limit }} caractères"
+    )]
+    #[Assert\Type('string')]
+    #[Assert\Regex("/[\w]*[a-zA-Z]+[\w]*/")] // Le nom de la catégorie doit comporter au moins une lettre et aucun caractère spécial
     private string $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Post::class, orphanRemoval: true)]

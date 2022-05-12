@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="text-center">
+		<h1>Bienvenue sur mon SuperBlog</h1>
+
+		<h2>Retrouvez nos 5 derniers articles ici:</h2>
+	</div>
+	<div class="d-flex justify-content-evenly flex-wrap">
+		{% for post in posts %}
+			<div class="card m-3" style="width: 18rem;">
+				<img src="..." class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">{{ post.title }}</h5>
+					<p class="card-text">{{ post.subContent }}</p>
+					<a href="{{ path('app_single_post', {id: post.id}) }}" class="btn btn-primary">Voir plus</a>
+					<small>{{post.createdAt|format_datetime('short', 'none', locale='fr')}}</small>
+				</div>
+			</div>
+		{% else %}
+			<p>Il n'y a pas d'article pour le moment</p>
+		{% endfor %}
+	</div>
+
+{% endblock %}

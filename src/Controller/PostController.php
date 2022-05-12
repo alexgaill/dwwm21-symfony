@@ -2,31 +2,38 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
-use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/post')]
 class PostController extends AbstractController
 {
     #[Route('/', name: 'app_post')]
-    public function index(ManagerRegistry $manager, Request $request): Response
+    public function index(ManagerRegistry $manager, Request $request, PaginatorInterface $paginator): Response
     {
-        $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $manager->getRepository(Post::class)->postPaginator($offset);
+        // $offset = max(0, $request->query->getInt('offset', 0));
+        // $paginator = $manager->getRepository(Post::class)->postPaginator($offset);
+
+        $pagination = $paginator->paginate(
+            $manager->getRepository(Post::class)->findAll(),
+            $request->query->getInt('page', 1)
+        );
 
         return $this->render('post/index.html.twig', [
-            'postsList' => $manager->getRepository(Post::class)->findAll(),
-            'postsList' => $paginator,
-            'previous' => $offset - PostRepository::PAGINATOR_PER_PAGE,
-            'next' => min(count($paginator), $offset + PostRepository::PAGINATOR_PER_PAGE),
-            'postQty' => PostRepository::PAGINATOR_PER_PAGE
+            // 'postsList' => $manager->getRepository(Post::class)->findAll(),
+            // 'postsList' => $paginator,
+            // 'previous' => $offset - PostRepository::PAGINATOR_PER_PAGE,
+            // 'next' => min(count($paginator), $offset + PostRepository::PAGINATOR_PER_PAGE),
+            // 'postQty' => PostRepository::PAGINATOR_PER_PAGE
+            'postsList' => $pagination
         ]);
     }
 

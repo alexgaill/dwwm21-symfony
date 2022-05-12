@@ -18,6 +18,8 @@ Vous pouvez retrouver le projet sur <https://github.com/alexgaill/dwwm21-symfony
 > [FakerPhp](https://packagist.org/packages/fakerphp/faker)
 >
 > [Documentation FakerPhp](https://fakerphp.github.io/)
+>
+> [KnpPaginator](https://github.com/KnpLabs/KnpPaginatorBundle)
 
 ## Documents de cours
 > [Déroulé](documentsCours/deroule.pdf) 

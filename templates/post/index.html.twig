@@ -2,15 +2,16 @@
 
 {% block body %}
 	{# 
-	        dump() permet de débugguer 
-	        et d'afficher les informations contenues dans une variable.
-	        Cette fonction correspond au var_dump() de php en plus joli.
-	     #}
+				        dump() permet de débugguer 
+				        et d'afficher les informations contenues dans une variable.
+				        Cette fonction correspond au var_dump() de php en plus joli.
+				     #}
 	{# {{ dump(categoriesList) }} #}
 		<div class="text-center"> <h1 class="my-5">Liste des articles</h1>
 
 		<p class="text-start text-secondary">Il y a
-			<span class="text-success">{{ postsList|length }}</span>
+			{# <span class="text-success">{{ postsList|length }}</span> #}
+			{{ postsList.getTotalItemCount }}
 			articles</p>
 		<table class="table table-stripped table-hover text-start">
 			<thead>
@@ -23,6 +24,20 @@
 				</tr>
 			</thead>
 			<tbody>
+				<tr>
+					{# sorting of properties based on query components #}
+					<th>{{ knp_pagination_sortable(postsList, 'Id', 'p.id') }}</th>
+					<th {% if postsList.isSorted('p.category.id') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(postsList, 'Categorie', 'p.category.id') }}
+					</th>
+					<th {% if postsList.isSorted('p.title') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(postsList, 'Title', 'p.title') }}
+					</th>
+					<th {% if postsList.isSorted('p.content') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(postsList, 'Contenu', 'p.content') }}
+					</th>
+					<th></th>
+				</tr>
 				{% if postsList %}
 					{% for post in postsList %}
 						<tr>
@@ -45,19 +60,34 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="5">
-                    <div class="d-flex justify-content-evenly">
-							<p><a href="{{ path('app_post', {offset: 0}) }}">Page 1</a></p>
-						{% if previous >= 0 %}
-							<p><a href="{{ path('app_post', { offset: previous }) }}">Previous</a></p>
-						{% endif %}
-						{% if next < postsList|length %}
-							<p><a href="{{ path('app_post', { offset: next }) }}">Next</a></p>
-						{% endif %}
-							<p><a href="{{ path('app_post', { offset: (postsList|length) - postQty }) }}">Dernière page</a></p>
-                    </div>
+					<td>
+						<div class="navigation">
+							{{ knp_pagination_render(postsList) }}
+						</div>
 					</td>
 				</tr>
+				{# <tr>
+                    <td colspan="5">
+                        <div class="d-flex justify-content-evenly">
+                            <p>
+                                <a href="{{ path('app_post', {offset: 0}) }}">Page 1</a>
+                            </p>
+                            {% if previous >= 0 %}
+                                <p>
+                                    <a href="{{ path('app_post', { offset: previous }) }}">Previous</a>
+                                </p>
+                            {% endif %}
+                            {% if next < postsList|length %}
+                                <p>
+                                    <a href="{{ path('app_post', { offset: next }) }}">Next</a>
+                                </p>
+                            {% endif %}
+                            <p>
+                                <a href="{{ path('app_post', { offset: (postsList|length) - postQty }) }}">Dernière page</a>
+                            </p>
+                        </div>
+                    </td>
+                </tr> #}
 				<tr>
 					<td colspan="5" class="text-center">
 						<a href="{{ path('app_add_post')}}">

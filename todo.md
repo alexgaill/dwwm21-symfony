@@ -10,6 +10,6 @@
 Exercice sondage
 --
 7. Contraintes ![ok](tick.png)
-8. Accueil (5 derniers articles ajoutés)
+8. Accueil (5 derniers articles ajoutés) ![ok](tick.png)
 9. Dropdown catégories
 10. Pagination pour liste des articles

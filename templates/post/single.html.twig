@@ -20,6 +20,11 @@
 				<div class="text-start">
 					<small>Article mis en ligne le
 						{{ post.createdAt|format_datetime('long', 'none', locale='fr') }}</small>
+					<p>
+						<small>
+							<a href="{{ path('app_single_category', {id: post.category.id}) }}">#{{post.category.name}}</a>
+						</small>
+					</p>
 				</div>
 			</div>
 		</div>

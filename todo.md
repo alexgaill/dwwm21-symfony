@@ -18,7 +18,7 @@ Exercice sondage
 Partie 2
 --
 
-11. Ajout d'images sur les articles => Gestion d'image
+11. Ajout d'images sur les articles => Gestion d'image ![ok](tick.png)
 12. Gestion des erreurs (template)
 13. Requête de tri des articles => QueryBuilder
 14. Gestion des utilisateurs => Security
@@ -27,9 +27,9 @@ Partie 2
 Finalisation
 --
 
-15. Ajout des articles sur la page catégorie
-16. Changer la couleur du nb d'articles
-17. Page d'article ajouter la catégorie pour voir les articles liés
+15. Ajout des articles sur la page catégorie ![ok](tick.png)
+16. Changer la couleur du nb d'articles ![ok](tick.png)
+17. Page d'article ajouter la catégorie pour voir les articles liés ![ok](tick.png)
 
 --
 Exercices

@@ -11,4 +11,22 @@
 		<a href="{{ path('app_update_category', {id:category.id}) }}"><button class="btn btn-info">Modifier</button></a>
 		<a href="{{ path('app_delete_category', {id:category.id}) }}"><button class="btn btn-danger" onclick="alert('Etes-vous sûr de vouloir supprimer?')">Supprimer</button></a>
 	</div>
+
+	<div class="d-flex justify-content-evenly flex-wrap">
+		{% for post in category.posts %}
+			<div class="card m-3" style="width: 18rem;">
+				{% if post.picture %}
+					<img src="{{ asset('assets/img/upload/' ~ post.picture) }}" class="card-img-top" alt="{{ post.title }}">
+				{% endif %}
+				<div class="card-body">
+					<h5 class="card-title">{{ post.title }}</h5>
+					<p class="card-text">{{ post.subContent }}</p>
+					<a href="{{ path('app_single_post', {id: post.id}) }}" class="btn btn-primary">Voir plus</a>
+					<small>{{post.createdAt|format_datetime('short', 'none', locale='fr')}}</small>
+				</div>
+			</div>
+		{% else %}
+			<p>Il n'y a pas d'article pour le moment</p>
+		{% endfor %}
+	</div>
 {% endblock %}

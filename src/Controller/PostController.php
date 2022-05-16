@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[Route('/post')]
 class PostController extends AbstractController
@@ -56,7 +57,18 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $post->setCreatedAt(new DateTime());
+            $picture = $form->get('picture')->getData();
+            if ($picture) {
+                $pictureName = md5(uniqid()). "." .$picture->guessExtension();
+                
+                $picture->move($this->getParameter('upload_dir'), $pictureName);
+            }
+                
+            $post->setCreatedAt(new DateTime())
+                // Condition ternaire => Si $pictureName a une valeur on utilise la valeur sinon on retourne null
+                ->setPicture($picture ? $pictureName : null );
+                // ->setPicture($pictureName ?? null );
+            
             $manager->getRepository(Post::class)->add($post, true);
 
             $this->addFlash('success', "L'article ".$post->getTitle()." a été enregistré avec succés ");
@@ -71,10 +83,48 @@ class PostController extends AbstractController
     #[Route("/{id}/update", name:'app_update_post', methods:['GET', 'POST'], requirements:['id' => '\d+'])]
     public function update(Post $post, Request $request, ManagerRegistry $manager): Response
     {
+        /**
+         * Si l'article possède déjà une image, symfony va vouloir la charger en temps qu'image
+         * pour la passer en valeur par défaut à l'input File.
+         * On doit donc générer l'image à partir de la chaine de caractère présente en BDD.
+         * 
+         * Pour permettre de générer ce fichier, le setPicture doit accepter le type File pour le paramètre
+         * 
+         * La deuxième solution est de passer à l'input file l'option mapped à false
+         */ 
+        if ($post->getPicture()) {
+            // On garde en mémoire le nom de l'ancienne image pour pouvoir la redonner ou la supprimer
+            $oldPicture = $post->getPicture();
+            $post->setPicture(
+                new File($this->getParameter('upload_dir'). '/' . $post->getPicture())
+            );
+        }
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $picture = $form->get('picture')->getData();
+            // Si une image est passée dans l'input File
+            if ($picture) {
+                // On génère le nom de la nouvelle image
+                $pictureName = md5(uniqid()). '.' .$picture->guessExtension();
+                // On stocke la nouvelle image
+                $picture->move($this->getParameter('upload_dir'), $pictureName);
+                // On enregistre le nouveau nom
+                $post->setPicture($pictureName);
+                // Si on a une ancienne image, on la supprime de notre dossier upload pour éviter de surcharger notre serveur
+                // avec des images inutiles.
+                if (isset($oldPicture)) {
+                    unlink($this->getParameter('upload_dir'). '/' . $oldPicture);
+                }
+            } else {
+                // Si aucune image n'a été passé à l'input File,
+                // on vérifie si l'article avait déjà une image.
+                // Si c'est le cas, on lui réattribut cette ancienne image
+                if (isset($oldPicture)) {
+                    $post->setPicture($oldPicture);
+                }
+            }
             $manager->getRepository(Post::class)->add($post, true);
 
             $this->addFlash('success', "L'article ".$post->getTitle()." a été modifié avec succés ");

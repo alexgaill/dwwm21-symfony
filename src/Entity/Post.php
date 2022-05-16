@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
 class Post
 {
     #[ORM\Id]
@@ -35,7 +37,7 @@ class Post
     private $content;
 
     #[ORM\Column(type: 'datetime')]
-    #[Assert\DateTime()]
+    // #[Assert\DateTime()]
     private $createdAt;
 
     private string $subContent;
@@ -44,6 +46,13 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Type(Category::class)]
     private $category;
+
+    #[ORM\Column(type: 'string', length: 40, nullable: true)]
+    #[Assert\File(
+        mimeTypes:["image/jpeg", "image/png"],
+        mimeTypesMessage: "Le format {{ type }} n'est pas autorisé. Seul les formats {{ types }} le sont."
+    )]
+    private $picture;
 
     public function getId(): ?int
     {
@@ -88,7 +97,8 @@ class Post
 
     public function getSubContent (): ?string
     {
-        $this->subContent = substr($this->content, 0, strpos($this->content, " ", 100)) . " ...";
+        $length = strlen($this->content) >= 100 ? 100 :  strlen($this->content);
+        $this->subContent = substr($this->content, 0, strpos($this->content, " ", $length)) . " ...";
         return $this->subContent;
     }
 
@@ -102,5 +112,26 @@ class Post
         $this->category = $category;
 
         return $this;
+    }
+
+    public function getPicture(): string|File|null
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string|File|null $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    #[ORM\PostRemove]
+    public function removePicture (): bool
+    {
+        if (file_exists(__DIR__ . '/../../public/assets/img/upload/' . $this->picture)) {
+            unlink(__DIR__ . '/../../public/assets/img/upload/' . $this->picture);
+        }
+        return true;
     }
 }

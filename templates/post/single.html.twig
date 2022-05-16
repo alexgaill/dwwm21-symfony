@@ -9,6 +9,11 @@
 		<div class="my-5">
 			<h1>{{post.title}}</h1>
 			<div class="col-8 mx-auto">
+				{% if post.picture %}
+					<div>
+						<img src="{{ asset('assets/img/upload/' ~ post.picture) }}" alt="{{ post.title }}">
+					</div>
+				{% endif %}
 				<div class="mt-5" id="postContent">
 					<p class="my-3">{{post.content}}</p>
 				</div>
@@ -20,7 +25,11 @@
 		</div>
 	</div>
 	<div class="text-start">
-		<a href="{{ path('app_update_post', {id:post.id}) }}"><button class="btn btn-info">Modifier</button></a>
-		<a href="{{ path('app_delete_post', {id:post.id}) }}"><button class="btn btn-danger" onclick="alert('Etes-vous sûr de vouloir supprimer?')">Supprimer</button></a>
+		<a href="{{ path('app_update_post', {id:post.id}) }}">
+			<button class="btn btn-info">Modifier</button>
+		</a>
+		<a href="{{ path('app_delete_post', {id:post.id}) }}">
+			<button class="btn btn-danger" onclick="alert('Etes-vous sûr de vouloir supprimer?')">Supprimer</button>
+		</a>
 	</div>
 {% endblock %}

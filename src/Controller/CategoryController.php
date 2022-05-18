@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -47,7 +48,10 @@ final class CategoryController extends AbstractController
         }
     }
 
-    #[Route(path:"/add", name:"app_add_category", methods:["GET", "POST"])]
+    #[
+        Route(path:"/add", name:"app_add_category", methods:["GET", "POST"]),
+        IsGranted("ROLE_ADMIN")
+    ]
     public function add (Request $request, ManagerRegistry $manager): Response
     {
         $category = new Category;
@@ -91,6 +95,10 @@ final class CategoryController extends AbstractController
     #[Route(path:'/{id}/update', name:'app_update_category', methods:['GET', 'POST'], requirements:['id' => "\d+"])]
     public function update (Category $category, Request $request, ManagerRegistry $manager): Response
     {
+        if(! $this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
+
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
@@ -110,6 +118,8 @@ final class CategoryController extends AbstractController
     #[Route('/{id}/delete', name:'app_delete_category', requirements: ['id' => "\d+"], methods: ['GET'])]
     public function delete(Category $category, ManagerRegistry $manager): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
+
         $manager->getRepository(Category::class)->remove($category, true);
         $this->addFlash('success', "La catégorie ".$category->getName()." a été supprimée avec succés ");
 

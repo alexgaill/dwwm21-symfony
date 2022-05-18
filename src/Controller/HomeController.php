@@ -37,4 +37,10 @@ class HomeController extends AbstractController
             'searchResult' => $pagination
         ]);
     }
+
+    #[Route('/admin')]
+    public function admin (): Response
+    {
+        return new Response('ok');
+    }
 }

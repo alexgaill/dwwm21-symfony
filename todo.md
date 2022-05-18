@@ -20,7 +20,7 @@ Partie 2
 
 11. Ajout d'images sur les articles => Gestion d'image ![ok](tick.png)
 12. Gestion des erreurs (template)
-13. Requête de tri des articles => QueryBuilder
+13. Requête de tri des articles => QueryBuilder + système de recherche
 14. Gestion des utilisateurs => Security
 
 --

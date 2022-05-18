@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+		<div class="text-center"> <h1 class="my-5">Résultats de la recherche</h1>
+
+		<p class="text-start text-secondary">Il y a
+			<span class="text-success">{{ searchResult.getTotalItemCount }}</span>
+			résultats</p>
+		<table class="table table-stripped table-hover text-start">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Catégorie</th>
+					<th>Titre</th>
+					<th>Contenu</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>{{ knp_pagination_sortable(searchResult, 'Id', 'id') }}</th>
+					<th {% if searchResult.isSorted('category.name') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(searchResult, 'Categorie', 'category.name') }}
+					</th>
+					<th {% if searchResult.isSorted('title') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(searchResult, 'Title', 'title') }}
+					</th>
+					<th {% if searchResult.isSorted('content') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(searchResult, 'Contenu', 'content') }}
+					</th>
+					<th></th>
+				</tr>
+				{% if searchResult %}
+					{% for post in searchResult %}
+						<tr>
+							<td>{{post.id}}</td>
+							<td>{{post.category.name}}</td>
+							<td>{{post.title}}</td>
+							<td>{{post.subContent}}</td>
+							<td>
+								<a href="{{ path('app_single_post', {id: post.id}) }}">
+									<button class="btn btn-info">Voir plus</button>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td colspan="5" class="text-warning">Il n'y a pas d'articles pour le moment.</td>
+					</tr>
+				{% endif %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>
+						<div class="navigation">
+							{{ knp_pagination_render(searchResult) }}
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+
+	</div>
+{% endblock %}

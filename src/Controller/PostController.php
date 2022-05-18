@@ -22,9 +22,11 @@ class PostController extends AbstractController
     {
         // $offset = max(0, $request->query->getInt('offset', 0));
         // $paginator = $manager->getRepository(Post::class)->postPaginator($offset);
+        $sort = $request->query->get('sort', 'id');
+        $direction = $request->query->get('direction', 'asc');
 
         $pagination = $paginator->paginate(
-            $manager->getRepository(Post::class)->findAll(),
+            $manager->getRepository(Post::class)->knpPaginator($sort, $direction),
             $request->query->getInt('page', 1)
         );
 

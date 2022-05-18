@@ -1,8 +1,10 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+<div class="my-3 text-danger">
     <h1>Code erreur: {{exception.code}}</h1>
 
     <p>{{exception.message}}</p>
-    <p>{{ content }}</p>
+</div>
+    {# <p>{{ content }}</p> #}
 {% endblock %}

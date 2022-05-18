@@ -55,6 +55,10 @@
 								<a class="nav-link" href="{{ path('app_add_post')}}">Ajouter un article</a>
 							</li>
 						</ul>
+						<form class="d-flex" method='GET' action="{{ path('app_research') }}">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+							<button class="btn btn-outline-dark" type="submit">Search</button>
+						</form>
 					</div>
 				</div>
 			</nav>

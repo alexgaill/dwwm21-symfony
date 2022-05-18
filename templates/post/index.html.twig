@@ -26,15 +26,15 @@
 			<tbody>
 				<tr>
 					{# sorting of properties based on query components #}
-					<th>{{ knp_pagination_sortable(postsList, 'Id', 'p.id') }}</th>
-					<th {% if postsList.isSorted('p.category.id') %} class="sorted" {% endif %}>
-						{{ knp_pagination_sortable(postsList, 'Categorie', 'p.category.id') }}
+					<th>{{ knp_pagination_sortable(postsList, 'Id', 'id') }}</th>
+					<th {% if postsList.isSorted('category.name') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(postsList, 'Categorie', 'category.name') }}
 					</th>
-					<th {% if postsList.isSorted('p.title') %} class="sorted" {% endif %}>
-						{{ knp_pagination_sortable(postsList, 'Title', 'p.title') }}
+					<th {% if postsList.isSorted('title') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(postsList, 'Title', 'title') }}
 					</th>
-					<th {% if postsList.isSorted('p.content') %} class="sorted" {% endif %}>
-						{{ knp_pagination_sortable(postsList, 'Contenu', 'p.content') }}
+					<th {% if postsList.isSorted('content') %} class="sorted" {% endif %}>
+						{{ knp_pagination_sortable(postsList, 'Contenu', 'content') }}
 					</th>
 					<th></th>
 				</tr>

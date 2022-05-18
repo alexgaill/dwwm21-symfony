@@ -68,6 +68,40 @@ class PostRepository extends ServiceEntityRepository
         return new Paginator($qb);
     }
 
+    /**
+     * Retourne les articles organisés
+     *
+     * @param string $sort
+     * @param string $direction
+     * @return array
+     */
+    public function knpPaginator (string $sort= 'id', string $direction = 'asc'): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        if ($sort === "category.name") {
+            $qb->join('p.category', 'c')
+            ->orderBy('c.name', $direction);
+        } else {
+            $qb->orderBy('p.'.$sort, $direction);
+        }
+        
+        return $qb->getQuery()
+        ->getResult()
+        ;
+    }
+
+    public function search (string $keyword = ""): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+            $qb->join('p.category', 'c')
+            ->where($qb->expr()->like('p.title', $qb->expr()->literal("% $keyword%")))
+            ->orWhere($qb->expr()->like('p.content', $qb->expr()->literal("% $keyword%")))
+            ->orWhere($qb->expr()->like('c.name', $qb->expr()->literal("% $keyword%")))
+            ;
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Post[] Returns an array of Post objects
 //     */
